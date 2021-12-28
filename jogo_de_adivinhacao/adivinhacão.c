@@ -19,10 +19,10 @@ void gameRun(){
     printf("         __                *       \n");
     printf("      ,db'    *     *              \n");
     printf("     ,d8/       *        *    *    \n");
-    printf("     888                           \n");
-    printf("     `db\\       *     *            \n");
-    printf("       `o`_                    **  \n");
-    printf("   *               *   *    _      *\n");
+    printf("     888                          Seja bem-vinde ao\n");
+    printf("     `db\\       *     *          jogo de adivinhação! Acer-\n");
+    printf("       `o`_                    ** te o número aleatório e   \n");
+    printf("   *               *   *    _      * vença o jogo!\n");
     printf("         *                 / )     \n");
     printf("     *    (\\__/) *       ( (  *    \n");
     printf("   ,-.,-.,)    (.,-.,-.,-.) ).,-.,-.\n");
@@ -36,7 +36,7 @@ void gameRun(){
     printf("           (__/       ) )\n");
     printf("                     (_/\n");
 
-    printf("Seja bem-vinde ao jogo de adivinhação! Acerte o número aleatório e vença o jogo! \n");
+    printf(" \n");
 
     printf("Escolha seu nível de dificuldade [1]fácil [3]médio [5]difícil\n");
     scanf("%d", &level);
@@ -85,7 +85,7 @@ void gameRun(){
             tries--;
         } else if (kick == randomNumber){
             won = 1;
-            printf("Parabéns você ganhou com %d!\n", tries);
+            printf("Parabéns você ganhou com %d tentativas!\n", tries);
             double lessPoints = (double) ((abs(kick) - randomNumber)/2);
             points = points - lessPoints;
             tries++;
@@ -93,7 +93,7 @@ void gameRun(){
             printf("Seus pontos foram: %.1f \n", points);
 
             //asks for user if they would like to play again and starts the game if answer will be "Yes"
-            printf("Deseja jogar novamente? [1] para jogar novamente [0]para encerrar\n");
+            printf("Deseja jogar novamente? [1] para jogar novamente [0] para encerrar\n");
             scanf("%d", &playAgain);
             switch (playAgain){
                 case 1:
@@ -126,7 +126,7 @@ void gameRun(){
     //tests if user lost or no and asks if they would like to play again
     if (!won){
         printf("Você perdeu :C Tente novamente!\n");
-        printf("Deseja jogar novamente? [1] para jogar novamente [0]para encerrar\n");
+        printf("Deseja jogar novamente? [1] para jogar novamente [0] para encerrar\n");
         scanf("%d", &playAgain);
         switch (playAgain){
         case 1:
