@@ -40,7 +40,8 @@ void gameRun(){
 
     printf("Escolha seu nível de dificuldade [1]fácil [3]médio [5]difícil\n");
     scanf("%d", &level);
-
+    
+    //choose the level and configure tries for game
     switch (level)
     {
         case 1:
@@ -60,23 +61,26 @@ void gameRun(){
             break;
     }
 
+    //get up input user about interval of random number 
     printf("Escolha o intervalo onde o número estará:\n");
     printf("Início do intervalo:\n");
     scanf("%d", &intervalStart);
     printf("Fim do intervalo:\n");
     scanf("%d", &intervalEnd);
-
+    
+    //seed setting up
     srand(time(NULL));
     int randomNumber = rand() % (intervalEnd + 1 - intervalStart) + intervalStart;
 
     printf("O intervalo escolhido foi %d - %d\n", intervalStart, intervalEnd);
-
+    
+    //run game
     while ((won == 0) && (tries < maxTries)){
         int remainsTries = maxTries - tries;
         printf("Qual é seu chute? Você possui %d tentativas\n", remainsTries);
         scanf("%d", &kick);
         
-        if(kick <0){
+        if(kick < 0){
             printf("Você não pode chutar números negativos! Tente novamente\n");
             tries--;
         } else if (kick == randomNumber){
@@ -88,6 +92,7 @@ void gameRun(){
 
             printf("Seus pontos foram: %.1f \n", points);
 
+            //asks for user if they would like to play again and starts the game if answer will be "Yes"
             printf("Deseja jogar novamente? [1] para jogar novamente [0]para encerrar\n");
             scanf("%d", &playAgain);
             switch (playAgain){
@@ -102,6 +107,7 @@ void gameRun(){
                     break;
             }
             break;
+
         } else if(kick > randomNumber) {
             printf("O número que você chutou é muito alto!\n");
             double lessPoints = (double) ((abs(kick) - randomNumber)/2);
@@ -116,7 +122,8 @@ void gameRun(){
         }
 
     }
-
+    
+    //tests if user lost or no and asks if they would like to play again
     if (!won){
         printf("Você perdeu :C Tente novamente!\n");
         printf("Deseja jogar novamente? [1] para jogar novamente [0]para encerrar\n");
@@ -137,7 +144,8 @@ void gameRun(){
 
 int
 main(void){
-
+    
+    //call function thats runs the game
     gameRun();
     return 0;
 }
