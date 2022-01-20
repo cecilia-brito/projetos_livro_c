@@ -4,33 +4,76 @@
 #include <time.h>
 #include <string.h>
 
-//gcc -ggdb -std=c99 -Wall -Werror -Wformat=0 -o skittles skittles.c -lcs50 -lm
+void opening(){
+    printf("/*******************************************/\n");
+    printf(" Hello, player! Welcome to the hangman game! \n");
+    printf("/*******************************************/\n");
+}
+
+char playerKicked(char currentPlayerKick, char kicks[], int* attempts){
+
+    printf("Qual a letra: \n");
+    scanf(" %c", &currentPlayerKick);
+
+    kicks[*attempts] = currentPlayerKick;
+    
+    (*attempts)++;
+}
+
+int wasItKicked(char playerKick, char kicks[], int* attempts){
+
+    int found = 0;
+
+    for(int i = 0; i < (*attempts); i++){
+        if(playerKick == kicks[i]){
+            found = 1;
+            break;
+        }
+    }
+
+    return found;
+}
+
+int didPlayerGetItRight(char secretWord[], char kicks[]){
+    for(int i = 0; i < strlen(secretWord); i++){
+        if(secretWord[i] == kicks[i]){
+                printf("A posição %d tem essa letra\n", i + 1);
+        }
+    }
+}
 
 int
 main(void){
+
+    #define maxAttempts 5
+
+    int attempts = 0;
     int gotItRight = 0;
     int hanged = 0;
+
     char gameSecretWord[20];
-    gameSecretWord[0] = "M";
-    gameSecretWord[1] = "E";
-    gameSecretWord[2] = "L";
-    gameSecretWord[3] = "A";
-    gameSecretWord[4] = "N";
-    gameSecretWord[5] = "C";
-    gameSecretWord[6] = "I";
-    gameSecretWord[7] = "A";
-    gameSecretWord[8] = "\0";
+    sprintf(gameSecretWord, "MELANCIA");
+
+    char currentPlayerKick;
+    char kicks[26]; 
+
+    opening();
 
     do{
-        char playerKick;
-        printf("Qual a letra: \n");
-        scanf("%c", &playerKick);
+
+        printf("Você já fez %d tentativas você tem %d tentativas restantes", attempts, maxAttempts - attempts);
+
         for(int i = 0; i < strlen(gameSecretWord); i++){
-            if(gameSecretWord[i] == playerKick){
-                printf("A posição %d tem essa letra\n", i + 1);
-            }
+            printf("_ ");
         }
-        
+
+        printf("\n");
+
+        playerKicked(currentPlayerKick, kicks, &attempts);
+
+        didPlayerGetItRight(gameSecretWord, kicks);
+
+        wasItKicked(currentPlayerKick, kicks, &attempts);
 
     } while(!gotItRight && !hanged);
 
