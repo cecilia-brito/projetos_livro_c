@@ -1,0 +1,10 @@
+void opening();
+void chooseWord();
+int alreadyWasItKicked(char letter);
+void drawHangmanGame();
+int itIsHanged();
+int itWon();
+void playerAddWord();
+int wrongKicks();
+int letterExists(char letter);
+void playerKicked();
