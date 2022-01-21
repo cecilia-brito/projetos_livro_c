@@ -75,7 +75,7 @@ void gameRun(){
     printf("O intervalo escolhido foi %d - %d\n", intervalStart, intervalEnd);
     
     //run game
-    while ((won == 0) && (tries < maxTries)){
+    do{
         int remainsTries = maxTries - tries;
         printf("Qual é seu chute? Você possui %d tentativas\n", remainsTries);
         scanf("%d", &kick);
@@ -121,7 +121,7 @@ void gameRun(){
             tries++;
         }
 
-    }
+    } while ((won == 0) && (tries < maxTries));
     
     //tests if user lost or no and asks if they would like to play again
     if (!won){
