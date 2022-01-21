@@ -196,7 +196,7 @@ int wrongKicks() {
     return mistakes;
 }
 
-chooseDifficultLevel(){
+void chooseDifficultLevel(){
     int level;
     printf("Escolha seu nível de dificuldade [1]fácil [3]médio [5]difícil\n");
     scanf("%d", &level);
