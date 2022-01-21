@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <ctype.h>
 #include "forca.h"
 
 #define maxAttemptsHard 6
@@ -10,8 +11,10 @@
 #define wordSize 20
 int points = 1000;
 int maxAttempts;
-
+char newWordUpperCase[wordSize];
 char gameSecretWord[wordSize];
+
+int amount;
 
 int attempts = 0;
 char kicks[26]; 
@@ -41,8 +44,9 @@ void chooseWord(){
     for(int i = 0; i <= random; i++) {
         fscanf(wordFile, "%s", gameSecretWord);
     }
- 
+
     fclose(wordFile);
+  
 
 }
 
@@ -130,45 +134,49 @@ int itWon(){
 
 void playerAddWord(){
     char want;
-
-    printf("Você deseja adicionar uma nova palavra no jogo? S/N");
+    int found = 1;
+    FILE* wordFile;
+    char newWord[wordSize];
+    
+    printf("Você deseja adicionar uma nova palavra no jogo? S/N: ");
     scanf(" %c", &want);
 
     if(want == 'S' || want == 's'){
-        char newWord[wordSize];
 
-        printf("Digite a palavra em letras maiúsculas");
-        scanf("%s", &newWord);
+        printf("Digite a palavra em letras maiúsculas: ");
+        scanf("%s", &newWordUpperCase);
 
-        for(int i = 0; i < strlen(newWord); i++){
-            char word = newWord[i];
-            while ((word <= 65) && (word >= 90)){
-                printf("\n\nDigite letras MAIÚSCULAS, por favor :)\n\n");
-                scanf("%s", &newWord);
-            }    
-        }
-            FILE* wordFile;
+        wordFile = fopen("words.txt", "r+");
 
-            wordFile = fopen("words.txt", "r+");
+        if(wordFile == 0){
+            printf("DB Connection failed");
+            exit(1);
+        } 
 
-            if(wordFile == 0){
-                printf("DB Connection failed");
-                exit(1);
-            } 
+        //TO-DO - Implementar verificação para ver se usuário digitou uma palavra que já existe no bancp de dados
+        // while (fgets(newWordUpperCase, wordSize, wordFile) != NULL){
+        //     if((strstr(wordFile, newWordUpperCase) != NULL)){
+        //         printf("Digite uma outra palavra, pois essa já existe no nosso banco de dados: ");
+        //         scanf("%s", &newWordUpperCase);
+        //     } else {
+        //         break;
+        //     }
+        // }
 
-            int amount;
-            fscanf(wordFile, "%04d", &amount);
-            amount++;
 
-            fseek(wordFile, 0, SEEK_SET);
-            fprintf(wordFile, "%04d", amount);
+        fscanf(wordFile, "%d", &amount);
+        amount++;
+            
+        fseek(wordFile, 0, SEEK_SET);
+        fprintf(wordFile, "%04d", amount);
     
-            fseek(wordFile, 0, SEEK_END);
-            fprintf(wordFile, "\n%s", newWord);
+        fseek(wordFile, 0, SEEK_END);
+        fprintf(wordFile, "\n%s", newWordUpperCase);
     
-            fclose(wordFile);
+        fclose(wordFile);
+            
     } else {
-        return 0;
+        return;
     }
 }
 
@@ -258,6 +266,16 @@ void addRanking(){
             fclose(ranking);
         }
     }
+}
+
+char transformUppercase(char string[], char string2[]){
+    int i = 0;
+    while(string[i] != '\0'){
+        string2[i] = toupper(string[i]);
+        i++;
+    }
+
+    return string2;
 }
 
 int

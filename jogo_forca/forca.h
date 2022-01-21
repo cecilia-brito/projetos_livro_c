@@ -11,3 +11,4 @@ void playerKicked();
 void chooseDifficultLevel();
 int pointsCalc();
 void addRanking();
+char transformUppercase(char string[], char string2[]);
