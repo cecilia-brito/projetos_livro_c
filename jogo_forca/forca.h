@@ -9,3 +9,5 @@ int wrongKicks();
 int letterExists(char letter);
 void playerKicked();
 void chooseDifficultLevel();
+int pointsCalc();
+void addRanking();

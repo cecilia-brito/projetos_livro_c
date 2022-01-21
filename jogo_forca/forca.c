@@ -8,7 +8,7 @@
 #define maxAttemptsMedium 9
 #define maxAttemptsEasy 12
 #define wordSize 20
-
+int points = 1000;
 int maxAttempts;
 
 char gameSecretWord[wordSize];
@@ -103,11 +103,11 @@ void playerKicked(){
         kicks[attempts] = currentPlayerKick;
         
         attempts++;
+
     } else {
         printf("\n\nDigite em letras MAIÚSCULAS, por favor :)\n\n");
         playerKicked();
     }
-
     printf("\n");
 }
 
@@ -223,6 +223,43 @@ void chooseDifficultLevel(){
     }
 }
 
+int pointsCalc(){
+    points = points - (wrongKicks()*maxAttempts);
+    printf("\n\n -> Você conseguiu %d pontos\n\n", points);
+    return points;
+}
+
+void addRanking(){
+    char want;
+    char name[26];
+    printf("Você gostaria de salvar sua pontuação no nosso Ranking?\n\n");
+    scanf(" %c", &want);
+    if(want == 'S' || want == 's'){
+        printf("Digite seu nome para colocar no nosso ranking: ");
+        scanf("%s", &name);
+
+        FILE* ranking;
+        ranking = fopen("ranking.txt", "r+");
+
+        if(ranking == 0){
+            printf("DB Connection failed");
+            exit(1);
+        } else{
+            int amount;
+            fscanf(ranking, "%04d", &amount);
+            amount++;
+
+            fseek(ranking, 0, SEEK_SET);
+            fprintf(ranking, "%04d", amount);
+        
+            fseek(ranking, 0, SEEK_END);
+            fprintf(ranking, "\n%s - %d ", name, points);
+        
+            fclose(ranking);
+        }
+    }
+}
+
 int
 main(void){
 
@@ -246,6 +283,8 @@ main(void){
 
       if(itWon()) {
         printf("\nParabéns, você ganhou!\n\n");
+
+        pointsCalc();
  
         printf("       ___________      \n");
         printf("      '._==_==_=_.'     \n");
@@ -259,6 +298,7 @@ main(void){
         printf("        '-------'       \n\n");
 
         playerAddWord();
+        addRanking();
  
     } else {
         printf("\nPuxa, você foi enforcado!\n");
