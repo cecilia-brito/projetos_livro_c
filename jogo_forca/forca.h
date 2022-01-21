@@ -8,3 +8,4 @@ void playerAddWord();
 int wrongKicks();
 int letterExists(char letter);
 void playerKicked();
+chooseDifficultLevel();

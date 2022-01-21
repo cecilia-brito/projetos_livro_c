@@ -4,8 +4,13 @@
 #include <string.h>
 #include "forca.h"
 
-#define maxAttempts 5
+#define maxAttemptsHard 6
+#define maxAttemptsMedium 9
+#define maxAttemptsEasy 12
 #define wordSize 20
+
+int maxAttempts;
+
 char gameSecretWord[wordSize];
 
 int attempts = 0;
@@ -99,7 +104,7 @@ void playerKicked(){
         
         attempts++;
     } else {
-        printf("\n\nDigite letras MAIÚSCULAS, por favor :)\n\n");
+        printf("\n\nDigite em letras MAIÚSCULAS, por favor :)\n\n");
         playerKicked();
     }
 
@@ -127,34 +132,42 @@ void playerAddWord(){
     char want;
 
     printf("Você deseja adicionar uma nova palavra no jogo? S/N");
-    scanf(" %c", want);
+    scanf(" %c", &want);
 
-    if(want == "S" || want == "s"){
+    if(want == 'S' || want == 's'){
         char newWord[wordSize];
-        printf("Digite a palavra em letraas maiúsculas");
-        scanf("s", &newWord);
 
-        FILE* wordFile;
+        printf("Digite a palavra em letras maiúsculas");
+        scanf("%s", &newWord);
 
-        wordFile = fopen("words.txt", "r+");
+        for(int i = 0; i < strlen(newWord); i++){
+            char word = newWord[i];
+            while ((word <= 65) && (word >= 90)){
+                printf("\n\nDigite letras MAIÚSCULAS, por favor :)\n\n");
+                scanf("%s", &newWord);
+            }    
+        }
+            FILE* wordFile;
 
-        if(wordFile == 0){
-            printf("DB Connection failed");
-            exit(1);
-        } 
+            wordFile = fopen("words.txt", "r+");
 
-        int amount;
-        fscanf(wordFile, "%d", &amount);
-        amount++;
+            if(wordFile == 0){
+                printf("DB Connection failed");
+                exit(1);
+            } 
 
-        fseek(wordFile, 0, SEEK_SET);
-        fprintf(wordFile, "%d", amount);
- 
-        fseek(wordFile, 0, SEEK_END);
-        fprintf(wordFile, "\n%s", newWord);
- 
-        fclose(wordFile);
-    } else{
+            int amount;
+            fscanf(wordFile, "%04d", &amount);
+            amount++;
+
+            fseek(wordFile, 0, SEEK_SET);
+            fprintf(wordFile, "%04d", amount);
+    
+            fseek(wordFile, 0, SEEK_END);
+            fprintf(wordFile, "\n%s", newWord);
+    
+            fclose(wordFile);
+    } else {
         return 0;
     }
 }
@@ -183,11 +196,39 @@ int wrongKicks() {
     return mistakes;
 }
 
+chooseDifficultLevel(){
+    int level;
+    printf("Escolha seu nível de dificuldade [1]fácil [3]médio [5]difícil\n");
+    scanf("%d", &level);
+    if((level != 1) && (level != 3) && (level != 5)){
+        printf("-> Digite um nível válido");
+        chooseDifficultLevel();
+    } else {
+        switch (level){
+        case 1:
+            maxAttempts = maxAttemptsEasy;
+            break;
+        
+        case 3:
+            maxAttempts = maxAttemptsMedium;
+            break;
+        
+        case 5:
+            maxAttempts = maxAttemptsHard;
+            break;
+
+        default:
+            break;
+        }
+    }
+}
+
 int
 main(void){
 
     opening();
     chooseWord();
+    chooseDifficultLevel();
 
     do{
 
@@ -216,6 +257,8 @@ main(void){
         printf("           ) (          \n");
         printf("         _.' '._        \n");
         printf("        '-------'       \n\n");
+
+        playerAddWord();
  
     } else {
         printf("\nPuxa, você foi enforcado!\n");
@@ -238,6 +281,4 @@ main(void){
         printf("     \\_         _/         \n");
         printf("       \\_______/           \n");
     }
-
-    playerAddWord();
 }
