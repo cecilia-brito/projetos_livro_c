@@ -69,12 +69,13 @@ void drawHangmanGame(){
     printf("_|___           \n");
     printf("\n\n");
 
-    printf("Você já fez %d tentativas você tem %d tentativas restantes", attempts, maxAttempts - attempts);
+    printf("Você já fez %d tentativas você tem %d tentativas restantes\n\n", attempts, maxAttempts - attempts);
     
     for(int i = 0; i < strlen(gameSecretWord); i++){
         if (alreadyWasItKicked(gameSecretWord[i])){
             printf("%c ", gameSecretWord[i]);
         } else{
+            printf(" ");
             printf("_ ");
         }
     }    
@@ -84,18 +85,23 @@ void drawHangmanGame(){
 
 void playerKicked(){
     char currentPlayerKick;
-    printf("Qual a letra: ");
+    printf("\n\n -> Qual a letra: ");
     scanf(" %c", &currentPlayerKick);
 
-    if(letterExists(currentPlayerKick)){
-        printf("Você acertou: a palavra tem a letra %c\n\n", currentPlayerKick);
-    } else{
-        printf("\nVocê errou: a palavra não tem a letra %c\n\n", currentPlayerKick);
-    }
+    if(currentPlayerKick >= 65 && currentPlayerKick <= 90){
+        if(letterExists(currentPlayerKick)){
+            printf("Você acertou: a palavra tem a letra %c\n\n", currentPlayerKick);
+        } else{
+            printf("\nVocê errou: a palavra não tem a letra %c\n\n", currentPlayerKick);
+        }
 
-    kicks[attempts] = currentPlayerKick;
-    
-    attempts++;
+        kicks[attempts] = currentPlayerKick;
+        
+        attempts++;
+    } else {
+        printf("\n\nDigite letras MAIÚSCULAS, por favor :)\n\n");
+        playerKicked();
+    }
 
     printf("\n");
 }
